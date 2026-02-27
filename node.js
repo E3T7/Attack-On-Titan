@@ -3,7 +3,7 @@ const {GoogleGenerativeAI} = require('@google/generative-ai');
 const readlineSync = require('readline-sync');
 const fs = require('fs');
 
-const knowledge = JSON.parse(fs.readFileSync('knowledge.json', 'utf-8'));
+const knowledge = JSON.parse(fs.readFileSync('data/knowledge.json', 'utf-8'));
 
 if (!process.env.GEMINI_API_KEY) {
   console.error("api tidak ada");

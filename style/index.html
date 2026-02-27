@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chatbot RAG</title>
+  <title>Attack Me</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="chat-container">
-  <h2>AdventureBo</h2>
+  <h2 class="apalah">Attack On Titan</h2>
   <div id="chat-box"></div>
   <div class="input-area">
     <input type="text" id="user-input" placeholder="Tulis pesan...">
@@ -24,14 +24,24 @@ async function sendMessage() {
   addMessage("You", message);
   input.value = "";
 
-  const response = await fetch("/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message })
-  });
+  try {
+    const response = await fetch("http://localhost:3000/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message })
+    });
 
-  const data = await response.json();
-  addMessage("Bot", data.reply);
+    const data = await response.json();
+    
+    if (!response.ok) {
+      addMessage("Bot", "Error: " + (data.error || "Undefined"));
+      return;
+    }
+    
+    addMessage("Bot", data.reply || "No response");
+  } catch (error) {
+    addMessage("Bot", "Error: " + error.message);
+  }
 }
 
 function addMessage(sender, text) {

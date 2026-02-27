@@ -1,37 +1,79 @@
 body {
   font-family: Arial;
-  background: #1974dd;
+  background: #ffffff;
+  background-image: url(https://cuestonian.com/wp-content/uploads/2023/04/AOT-TREE-1.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
   display: flex;
   justify-content: center;
   padding-top: 50px;
 }
+.apalah {
+  font-family: fjalla-one;
+  margin: 5px;
+  font-size: 40px;
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
 .chat-container {
-  width: 400px;
-  background: rgb(222, 133, 133);
+  margin: 0px;
+  width: 1000px;
+  height: 600px;
+  backdrop-filter: blur(5px);
   border-radius: 10px;
   padding: 15px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgb(0, 0, 0, 0.7);
 }
 
 #chat-box {
-  height: 300px;
+  height: 480px;
   overflow-y: auto;
   border: 1px solid #ddd;
   padding: 10px;
   margin-bottom: 10px;
+  display: flex;       
+  flex-direction: column;
 }
 
+
 .user {
+  display: inline-block; 
   text-align: right;
-  margin: 5px;
-  color: blue;
+  margin: 8px;
+  align-self: flex-end;  
+  color: #ffffff;
+  font-family: fjalla-one;
+  font-size: 25px;
+  animation: fadeIn 0.5s ease;
+  word-wrap: break-word;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-bottom-right-radius: 5px;
+  padding: 12px 16px;
+  max-width: 75%;
 }
 
 .bot {
+  display: inline-block;       
   text-align: left;
-  margin: 5px;
-  color: green;
+  margin: 8px;
+  align-self: flex-start;     
+  color: #10c49d;
+  font-family: fjalla-one;
+  font-size: 25px;
+  animation: fadeIn 0.5s ease;
+  word-wrap: break-word;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-bottom-left-radius: 5px;
+  padding: 12px 16px;
+  max-width: 75%;
 }
 
 .input-area {
@@ -39,10 +81,40 @@ body {
 }
 
 input {
+  margin-right: 5px;
   flex: 1;
   padding: 5px;
+    font-size: 14px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(3, 3, 3);
+    border-radius: 16px;
+    border: none;
+}
+  
+button {
+    font-size: 14px;
+    background-color: rgb(227, 65, 64);
+    color: white;
+    text-align: center;
+    padding: 8px 6px;
+    border-radius: 16px;
+    border: none;
+}
+button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+button:active {
+    background-color: rgb(255, 255, 255);
+    color: rgb(227, 65, 64);
 }
 
-button {
-  padding: 5px 10px;
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

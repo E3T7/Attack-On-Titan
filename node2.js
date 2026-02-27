@@ -2,17 +2,31 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
+const path = require("path");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
-app.use(cors());
+
+// enable CORS for all origins (adjust as needed for production)
+app.use(cors({
+  origin: '*',            // allow any origin
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(express.static("public")); // untuk load html
+app.use(express.static("style")); // untuk load html
+
+// Serve index.html for root path
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "style", "index.html"));
+});
 
 // ==============================
 // Load Knowledge TXT
 // ==============================
-const knowledgeText = fs.readFileSync("./data/knowledge.txt", "utf-8");
+const knowledgeText = fs.readFileSync("data/knowledge.txt", "utf-8");
 
 // ==============================
 // Setup Gemini
@@ -42,11 +56,13 @@ function buildPrompt(question) {
 
   return `
 Kamu adalah chatbot berbasis knowledge internal.
-
+Sebutan yang dia panggil pakai itu untuk balas ke user
+Kamu adalah chatbot yang mengetahui semua informasi tentang Attack On Titan, termasuk karakter, plot, dan detail dunia dalam cerita tersebut.
+Kamu akan menjawab perntanyaan dengan singkat, tunggu dia minta jelasin tanya tentang apa, baru kamu jelasin dengan detail.
 ATURAN:
-- Jawab hanya berdasarkan knowledge.
-- Jika tidak ada di knowledge, katakan:
-  "Maaf, informasi tidak tersedia dalam knowledge."
+- Topik utama kamu itu berdasarkan knowledge.
+- Jika di luar knowledge, katakan:
+  "Maaf, informasi tidak sesuai dengan Attack On Titan."
 
 === KNOWLEDGE ===
 ${knowledgeText}
@@ -69,18 +85,25 @@ app.post("/chat", async (req, res) => {
 
   try {
     const result = await model.generateContent(prompt);
+    
     const response = result.response.text();
 
     conversationHistory.push({ role: "User", text: userMessage });
     conversationHistory.push({ role: "Bot", text: response });
 
-    if (conversationHistory.length > 10) {
-      conversationHistory = conversationHistory.slice(-10);
+    if (conversationHistory.length > 2) { 
+      conversationHistory = conversationHistory.slice(-2);
     }
 
     res.json({ reply: response });
   } catch (error) {
-    res.status(500).json({ error: "Terjadi kesalahan." });
+    const errorMsg = error.message || String(error);
+    console.error("[ERROR]", errorMsg);
+    
+    // Log to file untuk debugging
+    fs.appendFileSync("error.log", `[${new Date().toISOString()}] ${errorMsg}\n`);
+    
+    res.status(500).json({ error: errorMsg });
   }
 });
 

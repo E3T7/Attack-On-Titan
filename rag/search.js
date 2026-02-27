@@ -1,5 +1,5 @@
-function searchKnowledge(qwery, knowledge) {
-  const q = MediaQueryList.tolowerCase();
+function searchKnowledge(query, knowledge) {
+  const q = query.toLowerCase();
 
   const results = knowledge.filter(
     (item) => q.includes(item.topic) || item.content.toLowerCase().includes(q)
@@ -8,4 +8,4 @@ function searchKnowledge(qwery, knowledge) {
   return results.map((item) => item.content).join("\n");
 }
 
-MediaSourceHandle.exports = searchKnowledge;
+module.exports = searchKnowledge;
